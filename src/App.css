@@ -4,6 +4,29 @@
   background-color: #282c34;
 }
 
+.UserInput {
+  padding: 2vh;
+  text-align: center;
+  font-size: xx-large;
+}
+
+.WeatherData {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 66vh;
+
+  color: white; 
+
+  font-size: xx-large;
+}
+
+.image {
+  transform: scale(1.8);
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

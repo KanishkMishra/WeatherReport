@@ -32,7 +32,7 @@ function App() {
 
   return (
     <div className="App">
-      <form onSubmit={queryWeather}>
+      <form className='UserInput' onSubmit={queryWeather}>
         <input
           type="text"
           placeholder='Input City Name'
@@ -45,17 +45,25 @@ function App() {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {weather && (
-        <pre
-          style={{
-            textAlign: "left",
-            background: "#001f3f",
-            padding: "10px",
-            color: "white",
-            overflowX: "auto"
-          }}
-        >
-          {JSON.stringify(weather, null, 2)}
-        </pre>
+        <div className="WeatherData">
+          <h2>{weather.name}, {weather.sys.country}</h2>
+          <h1><strong>{weather.main.temp}°C</strong></h1>
+          <h3><strong>Feels like: {weather.main.feels_like}°C</strong></h3>
+          <img class="image" src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} />
+          {/*JSON.stringify(weather, null, 2)*/}
+
+          <p><strong>Min / Max: {weather.main.temp_min}°C / {weather.main.temp_max}°C</strong></p>
+          
+          <p>
+            <strong>Humidity:</strong> {weather.main.humidity}%
+          </p>
+          <p>
+            <strong>Pressure:</strong> {weather.main.pressure} hPa
+          </p>
+          <p>
+            <strong>Wind:</strong> {weather.wind.speed} m/s at {weather.wind.deg}°
+          </p>
+        </div>
       )}
     </div>
   );
