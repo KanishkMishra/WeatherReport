@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [city, setCity] = useState("");
@@ -8,27 +8,45 @@ function App() {
 
   const freeAPIKey = "6956d211cabd1b73d44bdacfe7ce5344";
 
-  const queryWeather = async (e) => {
-    e.preventDefault(); // prevent page refresh if inside a form
-    if (!city) return;
+  const fetchWeather = async (cityName) => {
+    if (!cityName) return;
 
     try {
       setError(null);
       setWeather(null);
 
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${freeAPIKey}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${freeAPIKey}&units=metric`
       );
 
       if (!response.ok) throw new Error("City not found");
 
-      const data = await response.json(); // <-- only call json() once
-      setWeather(data); // <-- set the actual JSON object
+      const data = await response.json();
+      setWeather(data);
+
+      // Save location
+      localStorage.setItem("location", cityName);
+
     } catch (err) {
       console.error(err);
       setError(err.message);
     }
   };
+
+  const queryWeather = (e) => {
+    e.preventDefault();
+    fetchWeather(city);
+  };
+
+  // Fetch up to date data on refresh
+  useEffect(() => {
+    const savedLocation = localStorage.getItem("location");
+
+    if (savedLocation) {
+      setCity(savedLocation);
+      fetchWeather(savedLocation);
+    }
+  }, []);
 
   return (
     <div className="App">
@@ -46,23 +64,28 @@ function App() {
 
       {weather && (
         <div className="WeatherData">
-          <h2>{weather.name}, {weather.sys.country}</h2>
-          <h1><strong>{weather.main.temp}°C</strong></h1>
-          <h3><strong>Feels like: {weather.main.feels_like}°C</strong></h3>
-          <img class="image" src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} />
-          {/*JSON.stringify(weather, null, 2)*/}
+          <div id="currentData">
+            <h2>{weather.name}, {weather.sys.country}</h2>
+            <h1><strong>{weather.main.temp}°C</strong></h1>
+            <h3><strong>Feels like: {weather.main.feels_like}°C</strong></h3>
+            <img className="image" src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} />
+            {/*JSON.stringify(weather, null, 2)*/}
 
-          <p><strong>Min / Max: {weather.main.temp_min}°C / {weather.main.temp_max}°C</strong></p>
-          
-          <p>
-            <strong>Humidity:</strong> {weather.main.humidity}%
-          </p>
-          <p>
-            <strong>Pressure:</strong> {weather.main.pressure} hPa
-          </p>
-          <p>
-            <strong>Wind:</strong> {weather.wind.speed} m/s at {weather.wind.deg}°
-          </p>
+            <p><strong>Min / Max: {weather.main.temp_min}°C / {weather.main.temp_max}°C</strong></p>
+            
+            <p>
+              <strong>Humidity:</strong> {weather.main.humidity}%
+            </p>
+            <p>
+              <strong>Pressure:</strong> {weather.main.pressure} hPa
+            </p>
+            <p>
+              <strong>Wind:</strong> {weather.wind.speed} m/s at {weather.wind.deg}°
+            </p>
+          </div>
+          <div id="weekData">
+            
+          </div>
         </div>
       )}
     </div>
