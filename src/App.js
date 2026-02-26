@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 function App() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
+  const [forecast, setForecast] = useState(null);
   const [error, setError] = useState(null);
 
   const freeAPIKey = "6956d211cabd1b73d44bdacfe7ce5344";
@@ -14,15 +15,21 @@ function App() {
     try {
       setError(null);
       setWeather(null);
+      setForecast(null);
 
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${freeAPIKey}&units=metric`
-      );
+      const [currentRes, forecastRes] = await Promise.all([
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${freeAPIKey}&units=metric`),
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${freeAPIKey}&units=metric`)
+      ]);
 
-      if (!response.ok) throw new Error("City not found");
+      if (!currentRes.ok) throw new Error("City not found");
 
-      const data = await response.json();
-      setWeather(data);
+      // Save Data when received
+      const currentData = await currentRes.json();
+      setWeather(currentData);
+
+      const forecastData = await forecastRes.json();
+      setForecast(forecastData);
 
       // Save location
       localStorage.setItem("location", cityName);
@@ -33,6 +40,7 @@ function App() {
     }
   };
 
+  // Trigger to query weather data
   const queryWeather = (e) => {
     e.preventDefault();
     fetchWeather(city);
@@ -64,7 +72,6 @@ function App() {
 
       {weather && (
         <div className="WeatherData">
-          <div id="currentData">
             <h2>{weather.name}, {weather.sys.country}</h2>
             <h1><strong>{weather.main.temp}°C</strong></h1>
             <h3><strong>Feels like: {weather.main.feels_like}°C</strong></h3>
@@ -82,9 +89,24 @@ function App() {
             <p>
               <strong>Wind:</strong> {weather.wind.speed} m/s at {weather.wind.deg}°
             </p>
-          </div>
-          <div id="weekData">
-            
+        </div>
+      )}
+
+      {forecast && (
+        <div className="WeatherData">
+          <h3>Upcoming Forecast</h3>
+
+          <div style={{ display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap" }}>
+            {forecast.list.slice(0, 6).map((item, index) => (
+              <div key={index} style={{ textAlign: "center" }}>
+                <p>{item.dt_txt.split(" ")[1].slice(0,5)}</p>
+                <img
+                  src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
+                  alt={item.weather[0].description}
+                />
+                <p>{item.main.temp}°C</p>
+              </div>
+            ))}
           </div>
         </div>
       )}
