@@ -56,6 +56,12 @@ function App() {
     }
   }, []);
 
+  // Calculate Time local to searched city
+  const timeCalc = (currentTime, timeZoneShift) => {
+      const localTime = new Date((currentTime + timeZoneShift) * 1000);
+      return localTime.getUTCHours().toString().padStart(2, "0") + ":" + localTime.getUTCMinutes().toString().padStart(2, "0");
+  }
+
   return (
     <div className="App">
       <form className='UserInput' onSubmit={queryWeather}>
@@ -70,43 +76,51 @@ function App() {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {weather && (
-        <div className="WeatherData">
+      {weather && (() => {
+        
+        // format time to be local to searched city
+        const formatedTime = timeCalc(weather.dt, weather.timezone);
+
+        return (<div className="WeatherData">
             <h2>{weather.name}, {weather.sys.country}</h2>
             <h1><strong>{weather.main.temp}°C</strong></h1>
-            <h3><strong>Feels like: {weather.main.feels_like}°C</strong></h3>
+            <h3>Feels like: <strong>{weather.main.feels_like}°C</strong></h3>
+            <h3>Current Time: <strong>{formatedTime}</strong></h3>
             <img className="image" src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} />
             {/*JSON.stringify(weather, null, 2)*/}
 
             <p><strong>Min / Max: {weather.main.temp_min}°C / {weather.main.temp_max}°C</strong></p>
-            
-            <p>
-              <strong>Humidity:</strong> {weather.main.humidity}%
-            </p>
-            <p>
-              <strong>Pressure:</strong> {weather.main.pressure} hPa
-            </p>
-            <p>
-              <strong>Wind:</strong> {weather.wind.speed} m/s at {weather.wind.deg}°
-            </p>
+            <p><strong>Humidity:</strong> {weather.main.humidity}%</p>
+            <p><strong>Pressure:</strong> {weather.main.pressure} hPa</p>
+            <p><strong>Wind:</strong> {weather.wind.speed} m/s at {weather.wind.deg}°</p>
         </div>
-      )}
+        );
+      })()}
 
       {forecast && (
         <div className="WeatherData">
           <h3>Upcoming Forecast</h3>
 
           <div style={{ display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap" }}>
-            {forecast.list.slice(0, 6).map((item, index) => (
-              <div key={index} style={{ textAlign: "center" }}>
-                <p>{item.dt_txt.split(" ")[1].slice(0,5)}</p>
-                <img
-                  src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
-                  alt={item.weather[0].description}
-                />
-                <p>{item.main.temp}°C</p>
-              </div>
-            ))}
+            {
+              forecast.list.slice(0, 6).map((item, index) => {
+              
+              // Make sure time is local to the city being searched for
+              const formatedTime = timeCalc(item.dt, forecast.city.timezone);
+
+              return (
+                <div key={index} style={{ textAlign: "center" }}>
+                  <p>{formatedTime}</p>
+                
+                  <img
+                    src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
+                    alt={item.weather[0].description}
+                  />
+                  
+                  <p>{item.main.temp}°C</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
