@@ -47,6 +47,15 @@
   flex-wrap: wrap;
 }
 
+.fiveDay {
+  color: white;
+  font-size: x-large;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 60vh;
+}
 
 .App-logo {
   height: 40vmin;

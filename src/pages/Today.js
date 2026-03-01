@@ -52,7 +52,11 @@ function TodayPage({
             <h1><strong>{weather.main.temp}°C</strong></h1>
             <h3>Feels like: <strong>{weather.main.feels_like}°C</strong></h3>
             <h3>Current Time: <strong>{formatedTime}</strong></h3>
-            <img className="image" src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} />
+            
+            <img    className="image" 
+                    src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} 
+                    alt={weather.weather[0].description} 
+            />
 
             <p><strong>Min / Max: {weather.main.temp_min}°C / {weather.main.temp_max}°C</strong></p>
             <p><strong>Humidity:</strong> {weather.main.humidity}%</p>
@@ -70,21 +74,21 @@ function TodayPage({
             {
               forecast.list.slice(0, 6).map((item, index) => {
               
-              // Make sure time is local to the city being searched for
-              const formatedTime = timeCalc(item.dt, forecast.city.timezone);
+                // Make sure time is local to the city being searched for
+                const formatedTime = timeCalc(item.dt, forecast.city.timezone);
 
-              return (
-                <div key={index}>
-                  <p>{formatedTime}</p>
-                
-                  <img
-                    src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
-                    alt={item.weather[0].description}
-                  />
-                  
-                  <p>{item.main.temp}°C</p>
-                </div>
-              );
+                return (
+                    <div key={index}>
+                    <p>{formatedTime}</p>
+                    
+                    <img
+                        src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
+                        alt={item.weather[0].description}
+                    />
+                    
+                    <p>{item.main.temp}°C</p>
+                    </div>
+                );
             })}
           </div>
         </div>

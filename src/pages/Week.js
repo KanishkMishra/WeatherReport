@@ -29,17 +29,31 @@ function WeekPage({
     // Group data into 5 days
     const fiveDayData = Object.entries(groupedByDate)
         .slice(0, 5)
-        .map(([date, items]) => {
+        .map(([date, items], idx) => {
+            // Get min/max for the day
+            const temps = items.map(item => item.main.temp);
+            const minTemp = idx === 0 ? weather.main.temp_min : Math.min(...temps);
+            const maxTemp = idx === 0 ? weather.main.temp_max : Math.max(...temps);
 
-        const temps = items.map(item => item.main.temp);
+            // Count the frequency of each icon
+            const iconCounts = items.reduce((acc, item) => {
+                const icon = item.weather[0].icon;
+                acc[icon] = (acc[icon] || 0) + 1;
+                return acc;
+            }, {});
 
-        return {
-            date,
-            min: Math.min(...temps),
-            max: Math.max(...temps)
-        };
+            // Get the most common icon
+            const mostCommonIcon = Object.entries(iconCounts).reduce((a, b) =>
+                b[1] > a[1] ? b : a
+            )[0];
+
+            return {
+                date,
+                min: minTemp,
+                max: maxTemp,
+                icon: mostCommonIcon
+            };
     });
-
 
   return (
     <div className="App">
@@ -61,20 +75,21 @@ function WeekPage({
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <div className="fiveDay">
-            {forecast && (
-                <div className="WeatherData">
-                    {fiveDayData.map((day, index) => (
-                        <div key={index} style={{ margin: "20px 0" }}>
+        {forecast && weather && (
+            <div className="fiveDay">
+                {fiveDayData.map((day, index) => (
+                        <div key={index}>
                             <h3>{day.date}</h3>
-                            <p>
-                                {day.min.toFixed(1)}°C / {day.max.toFixed(1)}°C
-                            </p>
+                            <img    className="image"
+                                    src={`https://openweathermap.org/img/wn/${day.icon}@2x.png`}
+                                    alt="weather icon"
+                            />
+                            <p>{day.min.toFixed(1)}°C / {day.max.toFixed(1)}°C</p>
                         </div>
-                    ))}
-                </div>
-            )}
-        </div>
+                    )
+                )}
+            </div>
+        )}
     </div>
   );
 }
