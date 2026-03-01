@@ -5,9 +5,9 @@
 }
 
 .UserInput {
-  padding: 2vh;
   text-align: center;
   font-size: xx-large;
+  background-color: lightgray;
 }
 
 .WeatherData {
@@ -16,11 +16,15 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 25vh;
+  min-height: 33vh;
 
   color: white; 
 
   font-size: xx-large;
+}
+
+.WeatherData > P {
+  font-size: large;
 }
 
 .hourlyForecast {
@@ -33,7 +37,7 @@
 }
 
 .image {
-  transform: scale(1.8);
+  transform: scale(1.4);
 }
 
 .hourInterval {
