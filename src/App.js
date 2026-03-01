@@ -101,7 +101,7 @@ function App() {
         <div className="WeatherData">
           <h3>Upcoming Forecast</h3>
 
-          <div style={{ display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap" }}>
+          <div className="hourInterval">
             {
               forecast.list.slice(0, 6).map((item, index) => {
               
@@ -109,7 +109,7 @@ function App() {
               const formatedTime = timeCalc(item.dt, forecast.city.timezone);
 
               return (
-                <div key={index} style={{ textAlign: "center" }}>
+                <div key={index}>
                   <p>{formatedTime}</p>
                 
                   <img
