@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import SearchBar from "../SearchBar";
+
 
 function TodayPage({
   city,
@@ -10,12 +12,6 @@ function TodayPage({
   suggestions
 }) {
 
-  // Trigger to query weather data
-  const queryWeather = (e) => {
-      e.preventDefault();
-      fetchWeather(city);
-  };
-
         // Calculate Time local to searched city
   const timeCalc = (currentTime, timeZoneShift) => {
       const localTime = new Date((currentTime + timeZoneShift) * 1000);
@@ -24,32 +20,18 @@ function TodayPage({
 
   return (
     <div className="App">
+      
+      <SearchBar 
+        city={city}
+        setCity={setCity}
+        fetchWeather={fetchWeather}
+        title='Current & Hourly Weather'
+        suggestions={suggestions}
+      />
 
-      <form className='UserInput' onSubmit={queryWeather}>
-        <h3>Current & Hourly Weather</h3>
-        <input
-          type="text"
-          placeholder='Input City Name'
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          list="cities"
-        />
-
-        <datalist id="cities">
-          {suggestions.map((city, index) => (
-            <option
-              key={index}
-              value={`${city.name},${city.country}`}
-            />
-          ))}
-        </datalist>
-
-        <button type="submit">Search Weather</button>
-
-        <Link to="/week">
-            <button>View Five-Day Forecast</button>
-        </Link>
-      </form>
+      <Link to="/week">
+        <button>View Five-Day Forecast</button>
+      </Link>
 
 
       {error && <p style={{ color: "red" }}>{error}</p>}

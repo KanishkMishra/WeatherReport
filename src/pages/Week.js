@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SearchBar from "../SearchBar";
 
 function WeekPage({
     city,
@@ -9,11 +10,6 @@ function WeekPage({
     fetchWeather,
     suggestions
 }) {
-    // Trigger to query weather data
-    const queryWeather = (e) => {
-        e.preventDefault();
-        fetchWeather(city);
-    };
 
     // Group all data points by date
     const groupedByDate = forecast.list.reduce((acc, item) => {
@@ -59,20 +55,17 @@ function WeekPage({
   return (
     <div className="App">
 
-        <form className='UserInput' onSubmit={queryWeather}>
-            <h3>Five-Day Forecast</h3>
-            <input
-            type="text"
-            placeholder='Input City Name'
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            />
-            <button type="submit">Search Weather</button>
+        <SearchBar 
+            city={city}
+            setCity={setCity}
+            fetchWeather={fetchWeather}
+            title='Five-Day Forecast'
+            suggestions={suggestions}
+        />
 
-            <Link to="/">
-                <button>Back to Current Weather</button>
-            </Link>
-        </form>
+        <Link to="/">
+            <button>Back to Current Weather</button>
+        </Link>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 

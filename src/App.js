@@ -59,21 +59,21 @@ function App() {
     }
   }, []);
 
-  // Get autocomplete suggestions
-  useEffect(() => {
-    if (city.length < 3) {
-      setSuggestions([]);
-      return;
-    }
+    // Get autocomplete suggestions
+    useEffect(() => {
+        if (city.length < 3) {
+            setSuggestions([]);
+            return;
+        }
 
-    const timeout = setTimeout(() => {
-      fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${freeAPIKey}`)
-        .then(res => res.json())
-        .then(data => setSuggestions(data));
-    }, 400);
+        const timeout = setTimeout(() => {
+            fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=10&appid=${freeAPIKey}`)
+                .then(res => res.json())
+                .then(data => setSuggestions(data));
+        }, 400);
 
-    return () => clearTimeout(timeout);
-  }, [city]);
+        return () => clearTimeout(timeout);
+    }, [city]);
 
    return (
     <Router>
