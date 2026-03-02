@@ -6,7 +6,8 @@ function TodayPage({
   weather,
   forecast,
   error,
-  fetchWeather
+  fetchWeather,
+  suggestions
 }) {
 
   // Trigger to query weather data
@@ -31,7 +32,18 @@ function TodayPage({
           placeholder='Input City Name'
           value={city}
           onChange={(e) => setCity(e.target.value)}
+          list="cities"
         />
+
+        <datalist id="cities">
+          {suggestions.map((city, index) => (
+            <option
+              key={index}
+              value={`${city.name},${city.country}`}
+            />
+          ))}
+        </datalist>
+
         <button type="submit">Search Weather</button>
 
         <Link to="/week">

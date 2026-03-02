@@ -6,7 +6,8 @@ function WeekPage({
     weather,
     forecast,
     error,
-   fetchWeather
+    fetchWeather,
+    suggestions
 }) {
     // Trigger to query weather data
     const queryWeather = (e) => {

@@ -11,6 +11,7 @@ import Week from './pages/Week';
 
 function App() {
   const [city, setCity] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [error, setError] = useState(null);
@@ -58,6 +59,22 @@ function App() {
     }
   }, []);
 
+  // Get autocomplete suggestions
+  useEffect(() => {
+    if (city.length < 3) {
+      setSuggestions([]);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${freeAPIKey}`)
+        .then(res => res.json())
+        .then(data => setSuggestions(data));
+    }, 400);
+
+    return () => clearTimeout(timeout);
+  }, [city]);
+
    return (
     <Router>
       <Routes>
@@ -71,6 +88,7 @@ function App() {
               forecast={forecast}
               error={error}
               fetchWeather={fetchWeather}
+              suggestions={suggestions}
             />
           }
         />
@@ -84,6 +102,7 @@ function App() {
               forecast={forecast}
               error={error}
               fetchWeather={fetchWeather}
+              suggestions={suggestions}
             />
           }
         />
