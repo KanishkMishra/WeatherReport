@@ -69,21 +69,28 @@ function WeekPage({
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        {forecast && weather && (
-            <div className="fiveDay">
-                {fiveDayData.map((day, index) => (
-                        <div key={index}>
-                            <h3>{day.date}</h3>
-                            <img    className="image"
-                                    src={`https://openweathermap.org/img/wn/${day.icon}@2x.png`}
-                                    alt="weather icon"
-                            />
-                            <p>{day.min.toFixed(1)}°C / {day.max.toFixed(1)}°C</p>
-                        </div>
-                    )
-                )}
+        {forecast && weather && (() => {
+            const savedLocation =  JSON.parse(localStorage.getItem("location"));
+
+            return (
+            <div className="WeatherData">
+                <h2>{[savedLocation.name, savedLocation.state, savedLocation.country].filter(Boolean).join(",")}</h2>
+                <div className="fiveDay">
+                    {fiveDayData.map((day, index) => (
+                            <div key={index}>
+                                <h3>{day.date}</h3>
+                                <img    className="image"
+                                        src={`https://openweathermap.org/img/wn/${day.icon}@2x.png`}
+                                        alt="weather icon"
+                                />
+                                <p>{day.min.toFixed(1)}°C / {day.max.toFixed(1)}°C</p>
+                            </div>
+                        )
+                    )}
+                </div>
             </div>
-        )}
+            );
+        })()}
     </div>
   );
 }

@@ -40,9 +40,11 @@ function TodayPage({
       {weather && (() => {
         // format time to be local to searched city
         const formatedTime = timeCalc(weather.dt, weather.timezone);
+        const savedLocation = JSON.parse(localStorage.getItem("location"));
 
-        return (<div className="WeatherData">
-            <h2>{city}</h2>
+        return (
+        <div className="WeatherData">
+            <h2>{[savedLocation.name, savedLocation.state, savedLocation.country].filter(Boolean).join(",")}</h2>
             <h1><strong>{weather.main.temp}°C</strong></h1>
             <h3>Feels like: <strong>{weather.main.feels_like}°C</strong></h3>
             <h3>Current Time: <strong>{formatedTime}</strong></h3>
