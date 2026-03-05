@@ -29,20 +29,20 @@ function TodayPage({
         suggestions={suggestions}
       />
 
-      <Link to="/week">
-        <button>View Five-Day Forecast</button>
-      </Link>
-
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
+      {weather &&      
+      <Link to="/week">
+        <button>View Five-Day Forecast</button>
+      </Link>}
+
       {weather && (() => {
-        
         // format time to be local to searched city
         const formatedTime = timeCalc(weather.dt, weather.timezone);
 
         return (<div className="WeatherData">
-            <h2>{weather.name}, {weather.sys.country}</h2>
+            <h2>{city}</h2>
             <h1><strong>{weather.main.temp}°C</strong></h1>
             <h3>Feels like: <strong>{weather.main.feels_like}°C</strong></h3>
             <h3>Current Time: <strong>{formatedTime}</strong></h3>
@@ -75,7 +75,7 @@ function TodayPage({
                     <div key={index}>
                     <p>{formatedTime}</p>
                     
-                    <img
+                    <img className="image"
                         src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
                         alt={item.weather[0].description}
                     />

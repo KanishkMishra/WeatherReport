@@ -1,6 +1,3 @@
-import { useState, useEffect } from "react";
-
-
 function SearchBar({
     city, 
     setCity, 
@@ -11,7 +8,12 @@ function SearchBar({
     // Trigger to query weather data
     const queryWeather = (e) => {
         e.preventDefault();
-        fetchWeather(city);
+
+        const chosen = suggestions.find((c) => 
+          [c.name, c.state, c.country].filter(Boolean).join(",") === city
+        );
+
+        fetchWeather(chosen);
     };
 
     return (
@@ -29,9 +31,9 @@ function SearchBar({
           {suggestions.map((city, index) => (
             <option
               key={index}
-              value={`${city.name},${city.country}`}
-            />
-          ))}
+              value={[city.name, city.state, city.country].filter(Boolean).join(",")}
+              />          
+        ))}
         </datalist>
 
         <button type="submit">Search Weather</button>

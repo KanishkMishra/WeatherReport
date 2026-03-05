@@ -18,8 +18,8 @@ function App() {
 
   const freeAPIKey = "6956d211cabd1b73d44bdacfe7ce5344";
 
-  const fetchWeather = async (cityName) => {
-    if (!cityName) return;
+  const fetchWeather = async (cityObject) => {
+    if (!cityObject) return;
 
     try {
       setError(null);
@@ -27,8 +27,8 @@ function App() {
       setForecast(null);
 
       const [currentRes, forecastRes] = await Promise.all([
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${freeAPIKey}&units=metric`),
-        fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${freeAPIKey}&units=metric`)
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${cityObject.lat}&lon=${cityObject.lon}&appid=${freeAPIKey}&units=metric`),
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${cityObject.lat}&lon=${cityObject.lon}&appid=${freeAPIKey}&units=metric`)
       ]);
 
       if (!currentRes.ok) throw new Error("City not found");
@@ -41,7 +41,7 @@ function App() {
       setForecast(forecastData);
 
       // Save location
-      localStorage.setItem("location", cityName);
+      localStorage.setItem("location", JSON.stringify(cityObject));
 
     } catch (err) {
       console.error(err);
@@ -51,10 +51,10 @@ function App() {
 
   // Fetch up to date data on refresh
   useEffect(() => {
-    const savedLocation = localStorage.getItem("location");
+    const savedLocation = JSON.parse(localStorage.getItem("location"));
 
     if (savedLocation) {
-      setCity(savedLocation);
+      setCity([savedLocation.name, savedLocation.state, savedLocation.country].filter(Boolean).join(","));
       fetchWeather(savedLocation);
     }
   }, []);
@@ -67,9 +67,13 @@ function App() {
         }
 
         const timeout = setTimeout(() => {
-            fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=10&appid=${freeAPIKey}`)
+            fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city.split(",")[0]}&limit=5&appid=${freeAPIKey}`)
                 .then(res => res.json())
-                .then(data => setSuggestions(data));
+                .then(data => {
+                  console.log(data);
+                  setSuggestions(data);
+
+                });
         }, 400);
 
         return () => clearTimeout(timeout);

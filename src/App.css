@@ -37,14 +37,19 @@
 }
 
 .image {
-  transform: scale(1.4);
+  transform: scale(2);
 }
 
 .hourInterval {
   width: 100vw;
   display: flex;
   justify-content: space-around;
+
+
   flex-wrap: wrap;
+  background-color: lightblue;
+  color: #282c34;
+  font-weight: bold;
 }
 
 .fiveDay {
@@ -55,6 +60,12 @@
   align-items: center;
 
   height: 60vh;
+}
+
+.fiveDay > div {
+  background-color: black;
+  border-radius: 25%;
+  padding: 20px;
 }
 
 .App-logo {
