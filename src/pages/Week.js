@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { MapContainer, TileLayer } from "react-leaflet";
 import SearchBar from "../SearchBar";
 
 function WeekPage({
@@ -8,7 +9,8 @@ function WeekPage({
     forecast,
     error,
     fetchWeather,
-    suggestions
+    suggestions,
+    map
 }) {
 
     // Group all data points by date
@@ -91,6 +93,14 @@ function WeekPage({
             </div>
             );
         })()}
+
+        {map && 
+        <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "400px", width: "100%" }}>
+            <TileLayer
+                url={map}
+                attribution='Weather data &copy; OpenWeatherMap'
+            />
+        </MapContainer>}
     </div>
   );
 }

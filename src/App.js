@@ -2,7 +2,7 @@ import './App.css';
 import { useState, useEffect } from "react";
 
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Routes,
     Route,
 } from "react-router-dom";
@@ -13,6 +13,7 @@ function App() {
   const [city, setCity] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [weather, setWeather] = useState(null);
+  const [map, setMap] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [error, setError] = useState(null);
 
@@ -28,7 +29,7 @@ function App() {
 
       const [currentRes, forecastRes] = await Promise.all([
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${cityObject.lat}&lon=${cityObject.lon}&appid=${freeAPIKey}&units=metric`),
-        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${cityObject.lat}&lon=${cityObject.lon}&appid=${freeAPIKey}&units=metric`)
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${cityObject.lat}&lon=${cityObject.lon}&appid=${freeAPIKey}&units=metric`),
       ]);
 
       if (!currentRes.ok) throw new Error("City not found");
@@ -39,6 +40,8 @@ function App() {
 
       const forecastData = await forecastRes.json();
       setForecast(forecastData);
+
+      setMap(`http://maps.openweathermap.org/maps/2.0/weather/TA2/{z}/{x}/{y}?appid=${freeAPIKey}`);
 
       // Save location
       localStorage.setItem("location", JSON.stringify(cityObject));
@@ -107,6 +110,7 @@ function App() {
               error={error}
               fetchWeather={fetchWeather}
               suggestions={suggestions}
+              map={map}
             />
           }
         />
