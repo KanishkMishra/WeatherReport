@@ -1,4 +1,6 @@
 import './App.css';
+import 'leaflet/dist/leaflet.css';
+
 import { useState, useEffect } from "react";
 
 import {
@@ -8,6 +10,7 @@ import {
 } from "react-router-dom";
 import Today from './pages/Today';
 import Week from './pages/Week';
+import Map from './pages/Map';
 
 function App() {
   const [city, setCity] = useState("");
@@ -41,7 +44,7 @@ function App() {
       const forecastData = await forecastRes.json();
       setForecast(forecastData);
 
-      setMap(`http://maps.openweathermap.org/maps/2.0/weather/TA2/{z}/{x}/{y}?appid=${freeAPIKey}`);
+      setMap(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`);
 
       // Save location
       localStorage.setItem("location", JSON.stringify(cityObject));
@@ -103,6 +106,21 @@ function App() {
           path="/week"
           element={
             <Week  
+              city={city}
+              setCity={setCity}
+              weather={weather}
+              forecast={forecast}
+              error={error}
+              fetchWeather={fetchWeather}
+              suggestions={suggestions}
+              map={map}
+            />
+          }
+        />
+        <Route
+          path="/map"
+          element={
+            <Map  
               city={city}
               setCity={setCity}
               weather={weather}
