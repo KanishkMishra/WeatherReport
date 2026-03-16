@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar";
 
 function WeekPage({
@@ -9,7 +8,6 @@ function WeekPage({
     error,
     fetchWeather,
     suggestions,
-    map
 }) {
 
     // Group all data points by date
@@ -63,10 +61,6 @@ function WeekPage({
             title='Five-Day Forecast'
             suggestions={suggestions}
         />
-
-        <Link to="/">
-            <button>Back to Current Weather</button>
-        </Link>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 

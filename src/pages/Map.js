@@ -11,7 +11,7 @@ function MapPage({
     error,
     fetchWeather,
     suggestions,
-    map
+    freeAPIKey
 }) {
     return (
         <div className="App">
@@ -23,7 +23,7 @@ function MapPage({
                 title='Precipitation Map'
                 suggestions={suggestions}
             />
-            {map && weather && 
+            {freeAPIKey && weather && 
                 <div className="WeatherData">
                     <MapContainer 
                         center={[weather.coord.lat, weather.coord.lon]} 
@@ -35,7 +35,7 @@ function MapPage({
                             attribution="© OpenStreetMap contributors"
                         />
                         <TileLayer
-                            url={map}
+                            url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}
                             attribution='Weather data &copy; OpenWeatherMap'
                         />
                     </MapContainer>

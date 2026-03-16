@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar";
 
 
@@ -31,11 +30,6 @@ function TodayPage({
 
 
       {error && <p style={{ color: "red" }}>{error}</p>}
-
-      {weather &&      
-      <Link to="/week">
-        <button>View Five-Day Forecast</button>
-      </Link>}
 
       {weather && (() => {
         // format time to be local to searched city

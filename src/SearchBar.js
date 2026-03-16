@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function SearchBar({
     city, 
     setCity, 
@@ -37,6 +39,16 @@ function SearchBar({
         </datalist>
 
         <button type="submit">Search Weather</button>
+
+        <Link to="/">
+            <button>Current Weather</button>
+        </Link>
+        <Link to="/week">
+            <button>Five Days Weather</button>
+        </Link>
+        <Link to="/map">
+            <button>Weather Map</button>
+        </Link>
       </form>
     );
 

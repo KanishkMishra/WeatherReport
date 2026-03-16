@@ -16,7 +16,6 @@ function App() {
   const [city, setCity] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [weather, setWeather] = useState(null);
-  const [map, setMap] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [error, setError] = useState(null);
 
@@ -43,8 +42,6 @@ function App() {
 
       const forecastData = await forecastRes.json();
       setForecast(forecastData);
-
-      setMap(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`);
 
       // Save location
       localStorage.setItem("location", JSON.stringify(cityObject));
@@ -113,7 +110,6 @@ function App() {
               error={error}
               fetchWeather={fetchWeather}
               suggestions={suggestions}
-              map={map}
             />
           }
         />
@@ -128,7 +124,7 @@ function App() {
               error={error}
               fetchWeather={fetchWeather}
               suggestions={suggestions}
-              map={map}
+              freeAPIKey={freeAPIKey}
             />
           }
         />
