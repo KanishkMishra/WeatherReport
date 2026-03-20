@@ -70,6 +70,27 @@
   padding: 20px;
 }
 
+.layerControls {
+  padding: 5px;
+  background-color: black;
+  width: auto;
+  height: 200px;
+  font-size: large;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+.layerControls > label {
+  padding-left: 10px;
+  padding-right: 10px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

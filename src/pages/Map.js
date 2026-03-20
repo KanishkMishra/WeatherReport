@@ -52,7 +52,7 @@ function MapPage({
                         {activeLayers.pressure &&       <TileLayer url={`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
 
                     </MapContainer>
-                    <div id="Layer UI controls">
+                    <div className="layerControls">
                         <label><input type="checkbox" checked={activeLayers.precipitation} onChange={() => setActiveLayers(prev => ({ ...prev, precipitation: !prev.precipitation }))}/>Precipitation</label>
                         <label><input type="checkbox" checked={activeLayers.clouds} onChange={() => setActiveLayers(prev => ({ ...prev, clouds: !prev.clouds }))}/>Clouds</label>
                         <label><input type="checkbox" checked={activeLayers.temp} onChange={() => setActiveLayers(prev => ({ ...prev, temp: !prev.temp }))}/>Temperature</label>
