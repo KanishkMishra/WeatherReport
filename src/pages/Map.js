@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import { useState } from "react";
 import SearchBar from "../SearchBar";
+import Legend from "./Legend"
 
 
 function MapPage({
@@ -36,7 +37,7 @@ function MapPage({
                     <MapContainer 
                         key={`${weather.coord.lat}-${weather.coord.lon}`}
                         center={[weather.coord.lat, weather.coord.lon]} 
-                        zoom={6} 
+                        zoom={8} 
                         style={{ height: "55vh", width: "90%"}}
                     >
                         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
@@ -55,6 +56,7 @@ function MapPage({
                         <option value="wind">Wind</option>
                         <option value="pressure">Pressure</option>
                     </select>
+                    <Legend layer={activeLayer}/>
                 </div>
             )})()}
         </div>
