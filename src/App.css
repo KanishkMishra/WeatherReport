@@ -73,8 +73,9 @@
 .layerControls {
   padding: 5px;
   background-color: black;
+  color: white;
   width: auto;
-  height: 200px;
+  height: auto;
   font-size: large;
 
   display: flex;

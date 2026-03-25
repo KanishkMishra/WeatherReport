@@ -13,14 +13,10 @@ function MapPage({
     suggestions,
     freeAPIKey
 }) {
-    const [activeLayers, setActiveLayers] = useState({
-        precipitation: true,
-        clouds: false,
-        temp: false,
-        wind: false,
-        pressure: false
-    });
 
+    const [activeLayer, setActiveLayer] = useState("precipitation");
+
+    
     return (
         <div className="App">
                   
@@ -45,20 +41,20 @@ function MapPage({
                     >
                         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
 
-                        {activeLayers.precipitation &&  <TileLayer url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
-                        {activeLayers.clouds &&         <TileLayer url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
-                        {activeLayers.temp &&           <TileLayer url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
-                        {activeLayers.wind &&           <TileLayer url={`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
-                        {activeLayers.pressure &&       <TileLayer url={`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
+                        {activeLayer === "precipitation" && <TileLayer url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
+                        {activeLayer === "clouds" &&        <TileLayer url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
+                        {activeLayer === "temp" &&          <TileLayer url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
+                        {activeLayer === "wind" &&          <TileLayer url={`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
+                        {activeLayer === "pressure" &&      <TileLayer url={`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=${freeAPIKey}`}/>}
 
                     </MapContainer>
-                    <div className="layerControls">
-                        <label><input type="checkbox" checked={activeLayers.precipitation} onChange={() => setActiveLayers(prev => ({ ...prev, precipitation: !prev.precipitation }))}/>Precipitation</label>
-                        <label><input type="checkbox" checked={activeLayers.clouds} onChange={() => setActiveLayers(prev => ({ ...prev, clouds: !prev.clouds }))}/>Clouds</label>
-                        <label><input type="checkbox" checked={activeLayers.temp} onChange={() => setActiveLayers(prev => ({ ...prev, temp: !prev.temp }))}/>Temperature</label>
-                        <label><input type="checkbox" checked={activeLayers.wind} onChange={() => setActiveLayers(prev => ({ ...prev, wind: !prev.wind }))}/>Wind</label>
-                        <label><input type="checkbox" checked={activeLayers.pressure} onChange={() => setActiveLayers(prev => ({ ...prev, pressure: !prev.pressure }))}/>Pressure</label>
-                    </div>
+                    <select onChange={(e) => setActiveLayer(e.target.value)} value={activeLayer} className="layerControls">
+                        <option value="precipitation">Precipitation</option>
+                        <option value="clouds">Clouds</option>
+                        <option value="temp">Temperature</option>
+                        <option value="wind">Wind</option>
+                        <option value="pressure">Pressure</option>
+                    </select>
                 </div>
             )})()}
         </div>
