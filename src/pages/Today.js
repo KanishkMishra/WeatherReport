@@ -31,58 +31,60 @@ function TodayPage({
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {weather && (() => {
-        // format time to be local to searched city
-        const formatedTime = timeCalc(weather.dt, weather.timezone);
-        const savedLocation = JSON.parse(localStorage.getItem("location"));
+      <div className="mainContent">
+        {weather && (() => {
+          // format time to be local to searched city
+          const formatedTime = timeCalc(weather.dt, weather.timezone);
+          const savedLocation = JSON.parse(localStorage.getItem("location"));
 
-        return (
-        <div className="WeatherData">
-            <h2>{[savedLocation.name, savedLocation.state, savedLocation.country].filter(Boolean).join(",")}</h2>
-            <h1><strong>{weather.main.temp}°C</strong></h1>
-            <h3>Feels like: <strong>{weather.main.feels_like}°C</strong></h3>
-            <h3>Current Time: <strong>{formatedTime}</strong></h3>
-            
-            <img    className="image" 
-                    src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} 
-                    alt={weather.weather[0].description} 
-            />
-
-            <p><strong>Min / Max: {weather.main.temp_min}°C / {weather.main.temp_max}°C</strong></p>
-            <p><strong>Humidity:</strong> {weather.main.humidity}%</p>
-            <p><strong>Pressure:</strong> {weather.main.pressure} hPa</p>
-            <p><strong>Wind:</strong> {weather.wind.speed} m/s at {weather.wind.deg}°</p>
-        </div>
-        );
-      })()}
-
-      {forecast && (
-        <div className="WeatherData">
-          <h3>Upcoming Forecast</h3>
-
-          <div className="hourInterval">
-            {
-              forecast.list.slice(0, 6).map((item, index) => {
+          return (
+          <div className="WeatherData">
+              <h2>{[savedLocation.name, savedLocation.state, savedLocation.country].filter(Boolean).join(",")}</h2>
+              <h1><strong>{weather.main.temp}°C</strong></h1>
+              <h3>Feels like: <strong>{weather.main.feels_like}°C</strong></h3>
+              <h3>Current Time: <strong>{formatedTime}</strong></h3>
               
-                // Make sure time is local to the city being searched for
-                const formatedTime = timeCalc(item.dt, forecast.city.timezone);
+              <img    className="image" 
+                      src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} 
+                      alt={weather.weather[0].description} 
+              />
 
-                return (
-                    <div key={index}>
-                    <p>{formatedTime}</p>
-                    
-                    <img className="image"
-                        src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
-                        alt={item.weather[0].description}
-                    />
-                    
-                    <p>{item.main.temp}°C</p>
-                    </div>
-                );
-            })}
+              <p><strong>Min / Max: {weather.main.temp_min}°C / {weather.main.temp_max}°C</strong></p>
+              <p><strong>Humidity:</strong> {weather.main.humidity}%</p>
+              <p><strong>Pressure:</strong> {weather.main.pressure} hPa</p>
+              <p><strong>Wind:</strong> {weather.wind.speed} m/s at {weather.wind.deg}°</p>
           </div>
-        </div>
-      )}
+          );
+        })()}
+
+        {forecast && (
+          <div className="WeatherData">
+            <h3>Upcoming Forecast</h3>
+
+            <div className="hourInterval">
+              {
+                forecast.list.slice(0, 6).map((item, index) => {
+                
+                  // Make sure time is local to the city being searched for
+                  const formatedTime = timeCalc(item.dt, forecast.city.timezone);
+
+                  return (
+                      <div key={index}>
+                      <p>{formatedTime}</p>
+                      
+                      <img className="image"
+                          src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
+                          alt={item.weather[0].description}
+                      />
+                      
+                      <p>{item.main.temp}°C</p>
+                      </div>
+                  );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
