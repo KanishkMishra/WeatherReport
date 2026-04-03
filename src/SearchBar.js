@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink  } from "react-router-dom";
 
 function SearchBar({
     city, 
@@ -20,7 +20,13 @@ function SearchBar({
 
     return (
       <form className='UserInput' onSubmit={queryWeather}>
-        <h3>{title}</h3>
+        <div className="navbar">
+          <NavLink  to="/" end>Current Weather</NavLink >
+          <NavLink  to="/week">Five Days Weather</NavLink>
+          <NavLink  to="/map">Weather Map</NavLink>
+        </div>  
+
+        {/*<h3>{title}</h3>*/}
         <input
           type="text"
           placeholder='Input City Name'
@@ -39,16 +45,6 @@ function SearchBar({
         </datalist>
 
         <button type="submit">Search Weather</button>
-
-        <Link to="/">
-            <button>Current Weather</button>
-        </Link>
-        <Link to="/week">
-            <button>Five Days Weather</button>
-        </Link>
-        <Link to="/map">
-            <button>Weather Map</button>
-        </Link>
       </form>
     );
 

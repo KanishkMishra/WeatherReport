@@ -38,7 +38,7 @@ function MapPage({
                         key={`${weather.coord.lat}-${weather.coord.lon}`}
                         center={[weather.coord.lat, weather.coord.lon]} 
                         zoom={8} 
-                        style={{ height: "55vh", width: "90%"}}
+                        style={{ height: "50vh", width: "90%"}}
                     >
                         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
 
